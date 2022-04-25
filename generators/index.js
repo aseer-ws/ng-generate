@@ -18,6 +18,8 @@ const containerGenerator = require(`./container/${
 const testUtilGenerator = require(`./testUtil/index.js`);
 const loadableUtilGenerator = require(`./loadable/index.js`);
 const webpackBaseBabelGenerator = require(`./webpack/base/babel/index.js`);
+const angvGenerator = require('./angv/new/index.js');
+const pluralize = require('pluralize');
 
 /**
  * Every generated backup file gets this extension
@@ -31,6 +33,7 @@ module.exports = plop => {
   plop.setGenerator('tUtil', testUtilGenerator);
   plop.setGenerator('loadable', loadableUtilGenerator);
   plop.setGenerator('webpackBaseBabel', webpackBaseBabelGenerator);
+  plop.setGenerator('angv', angvGenerator);
 
   plop.addHelper('directory', comp => {
     try {
@@ -43,6 +46,7 @@ module.exports = plop => {
       return `components/${comp}`;
     }
   });
+  plop.addHelper('singular', text => pluralize.singular(text));
   plop.addHelper('curly', (object, open) => (open ? '{' : '}'));
   plop.setActionType('prettify', answers => {
     const folderPath = `${path.join(

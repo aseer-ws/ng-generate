@@ -16,31 +16,24 @@ const prompts = [
     message: 'What should it be called?',
     default: 'Button',
   },
-  {
-    type: 'confirm',
-    name: 'memo',
-    default: false,
-    message: 'Do you want to wrap your component in React.memo?',
-  },
 ];
 prompts.unshift(existing.pathPrompt);
-prompts.push(existing.storyPrompt);
 
 module.exports = {
-  description: 'Add an unconnected component',
+  description: 'Add an view component',
   prompts,
   actions: data => {
     // Generate index.js and index.test.js
     const actions = [
       {
         type: 'add',
-        path: `${cwd}/{{path}}/{{properCase name}}/index.js`,
-        templateFile: './component/master.module.ts.hbs',
+        path: `${cwd}/{{path}}/{{properCase name}}/{{properCase name}}index.ts`,
+        templateFile: './angv/list.component.ts.hbs',
         abortOnFail: true,
       },
     ];
 
-    actions.push(...existing.actions(data));
+    // actions.push(...existing.actions(data));
     actions.push(existing.prettier());
 
     return actions;

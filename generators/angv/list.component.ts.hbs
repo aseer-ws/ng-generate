@@ -1,0 +1,88 @@
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { BaseListComponent } from 'src/app/common/base-list/base-list.component';
+import { AppSettings } from 'src/app/core/app-settings';
+import { {{pascalCase name}}Service } from 'src/app/services/{{kebabCase name}}/{{kebabCase name}}.service';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { {{pascalCase name}}Model } from 'src/app/models/{{kebabCase name}}.model';
+import { {{pascalCase name}}AddComponent } from '../{{kebabCase name}}-add-edit/{{kebabCase name}}-add.component';
+import { {{pascalCase name}}EditComponent } from '../{{kebabCase name}}-add-edit/{{kebabCase name}}-edit.component';
+import { TranslateService } from '@ngx-translate/core';
+import { UtilService } from 'src/app/services/util-service';
+import { SnackBarMessageService } from 'src/app/services/snackbar-message.service';
+import { Validators } from '@angular/forms';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
+import { HELP_GUIDES_SLUG } from 'src/app/core/utils/enum.util';
+
+@Component({
+  selector: 'app-{{kebabCase name}}-list',
+  templateUrl: './{{kebabCase name}}-list.component.html',
+  styleUrls: ['./{{kebabCase name}}-list.component.scss']
+})
+export class {{pascalCase name}}ListComponent
+  extends BaseListComponent
+  implements OnInit, AfterViewInit
+{
+  show_user: boolean = true;
+  filter: Object = {};
+  searchData = [];
+  statusOption: any[] = this.utilService.statusOption;
+  statusAlias: {} = this.utilService.statusAlias;
+  loaded = false;
+
+  displayedColumns = [];
+  constructor(
+    public appSettings: AppSettings,
+    private {{camelCase name}}Service: {{pascalCase name}}Service,
+    public translateService: TranslateService,
+    public utilService: UtilService,
+    public logger: SnackBarMessageService,
+    public localStorageService: LocalStorageService
+  ) {
+    super(
+      appSettings,
+      {{camelCase name}}Service,
+      logger,
+      localStorageService,
+      utilService
+    );
+    this.show_user = true;
+    this.dataSource = new MatTableDataSource<{{pascalCase name}}Model>();
+    this.guideSlug = HELP_GUIDES_SLUG.CONATINER_ADDITIONAL_TYPE;
+  }
+
+  ngOnInit(): void {
+    this.displayedColumns = [
+      'actions',
+      // columns to displaty in list goes here
+    ];
+  }
+
+  ngAfterViewInit(): void {
+    this.initializeList();
+    this.initializeSearch();
+    // This will listen to subject and reload the list
+    this.listSubscribe();
+  }
+
+  initializeSearch() {
+    this.loaded = true;
+    this.searchData = [
+      {
+        section_label: '',
+        section_elements: [
+          // filter elements goes here
+          {{!-- {
+            name: 'name',
+            label: this.translateService.instant(
+              'COMMON_NAME'
+            ),
+            type: 'text',
+            textLength: 56,
+            validators: [Validators.maxLength(56)]
+          }, --}}
+        ]
+      }
+    ];
+  }
+}
